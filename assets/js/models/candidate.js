@@ -1,6 +1,9 @@
 OpenDisclosure.Candidate = Backbone.Model.extend({
   linkPath : function() {
-    return '/candidate/' + this.attributes.short_name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    race = this.attributes.race;
+    return '/candidate/' +
+      race.election.jurisdiction + '/' + race.election.election_date + '/' + race.name + '/' +
+      this.attributes.committee.short_name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   },
 
   imagePath : function() {
@@ -12,25 +15,25 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   availableBalance : function() {
-    return OpenDisclosure.friendlyMoney(this.attributes.summary['ending_cash_balance'] -
-                                        this.attributes.summary['total_unpaid_bills']);
+    return OpenDisclosure.friendlyMoney(this.attributes.committee.summary['ending_cash_balance'] -
+                                        this.attributes.committee.summary['total_unpaid_bills']);
   },
 
   pctContributionsFromOakland : function() {
     return OpenDisclosure.friendlyPct(
       (this.attributes.received_contributions_from_oakland - this.attributes.self_contributions_total)/ (this._totalContributionsRaw() -
-      (this.attributes.self_contributions_total + this.attributes.summary['total_unitemized_contributions']))
+      (this.attributes.self_contributions_total + this.attributes.committee.summary['total_unitemized_contributions']))
     );
   },
 
   pctSmallContributions : function() {
     return OpenDisclosure.friendlyPct(
-      (this.attributes.summary['total_unitemized_contributions'] +
+      (this.attributes.committee.summary['total_unitemized_contributions'] +
        this.attributes.small_contributions) / this._totalContributionsRaw());
   },
 
   pctPersonalContributions: function(){
-    return OpenDisclosure.friendlyPct(this.get('self_contributions_total') / this.get('summary').total_contributions_received);
+    return OpenDisclosure.friendlyPct(this.attributes.committee.self_contributions_total / this.attributes.committee.summary.total_contributions_received);
   },
 
   avgContribution : function () {
@@ -38,10 +41,10 @@ OpenDisclosure.Candidate = Backbone.Model.extend({
   },
 
   friendlySummaryNumber : function(which) {
-    return OpenDisclosure.friendlyMoney(this.attributes.summary[which]);
+    return OpenDisclosure.friendlyMoney(this.attributes.committee.summary[which]);
   },
 
   _totalContributionsRaw : function() {
-    return this.attributes.summary['total_contributions_received'] + this.attributes.summary['total_misc_increases_to_cash'];
+    return this.attributes.committee.summary['total_contributions_received'] + this.attributes.committee.summary['total_misc_increases_to_cash'];
   },
 });

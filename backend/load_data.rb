@@ -5,11 +5,11 @@ class DataFetcher
   SOCRATA_URLS = [
     [DataFetcher::LateContribution, 'http://data.oaklandnet.com/resource/qact-u8hq.json'],
     [DataFetcher::Contribution, 'http://data.oaklandnet.com/resource/3xq4-ermg.json'],
-    [DataFetcher::Payment, 'http://data.oaklandnet.com/resource/bvfu-nq99.json'],
-    [DataFetcher::Loan, 'http://data.oaklandnet.com/resource/qaa7-q29f.json'],
+#    [DataFetcher::Payment, 'http://data.oaklandnet.com/resource/bvfu-nq99.json'],
+#    [DataFetcher::Loan, 'http://data.oaklandnet.com/resource/qaa7-q29f.json'],
     [DataFetcher::Summary, 'http://data.oaklandnet.com/resource/rsxe-vvuw.json'],
-    [DataFetcher::IEC, 'http://data.oaklandnet.com/resource/jkj3-8yq3.json'],
-    [DataFetcher::IEC, 'http://data.oaklandnet.com/resource/6ejr-39gh.json'],
+#    [DataFetcher::IEC, 'http://data.oaklandnet.com/resource/jkj3-8yq3.json'],
+#    [DataFetcher::IEC, 'http://data.oaklandnet.com/resource/6ejr-39gh.json'],
   ]
 
   def self.load_all_data!
@@ -38,6 +38,9 @@ class DataFetcher
 
       puts fetcher.status
     end
+    Election.load_elections('backend/elections.csv');
+    Race.load_races('backend/races.csv');
+    Candidate.load_candidates('backend/candidates.csv');
 
     puts "Run analysis"
     DataFetcher::CategoryContributions.run!

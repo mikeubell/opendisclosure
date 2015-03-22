@@ -33,6 +33,55 @@ class OpenDisclosureApp < Sinatra::Application
   # documented here:
   #   http://apidock.com/rails/ActiveRecord/Serialization/to_json
 
+  # Get information about elections
+  get '/api/elections' do 
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+    Election.all.to_json
+  end
+
+  get '/api/election/:jurisdiction' do |jurisdiction|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+    Election.where(jurisdiction: jurisdiction).all.to_json
+  end
+
+  get '/api/races/:jurisdiction/:date' do |jurisdiction, date|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    headers 'Content-Type' => 'application/json'
+
+    fields = {
+      include: [
+	:race
+      ]
+    }
+    Election.find_by(jurisdiction: jurisdiction, election_date: date).to_json(fields)
+    #id = Election.where(jurisdiction: jurisdiction, election_date: date).first.id;
+    #Race.includes(:election).where(election_id: id).to_json(fields)
+  end
+
+  get '/api/candidates/:jurisdiction/:date/:race' do |jurisdiction, date, race|
+    cache_control :public
+    last_modified Import.last.import_time
+
+    fields = {
+        include: [
+	  { committee: { methods: [ :short_name, :summary ] } },
+	  { race: {include: "election" } }
+	]
+    }
+    headers 'Content-Type' => 'application/json'
+    id = Election.where(jurisdiction: jurisdiction, election_date: date).first.id;
+    id = Race.where(election_id: id, name: race).first.id;
+    Candidate.where(race_id: id).to_json(fields);
+  end
+
   # This is data of contributions from an individual/company to various campaigns.
   get '/api/contributor/:id' do |id|
     cache_control :public

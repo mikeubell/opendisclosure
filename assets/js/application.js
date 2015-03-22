@@ -8,10 +8,13 @@
 
 //= require config
 
+//= require models/election
+//= require models/race
 //= require models/candidate
 //= require models/contribution
 //= require models/payment
 
+//= require collections/elections
 //= require collections/candidates
 //= require collections/contributions
 //= require collections/payments
@@ -23,6 +26,9 @@
 //= require views/committee
 //= require views/faq
 //= require views/home
+//= require views/dashboard
+//= require views/election
+//= require views/race
 //= require views/rules
 //= require views/contributor
 //= require views/employees

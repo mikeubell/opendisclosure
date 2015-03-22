@@ -12,7 +12,7 @@ OpenDisclosure.CategoryView = Backbone.View.extend({
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Category');
     data.addColumn('number', 'Amount');
-    data.addRow(['Not Itemized', attributes.summary.total_unitemized_contributions]);
+    data.addRow(['Not Itemized', attributes.committee.summary.total_unitemized_contributions]);
     _.each(this.collection, function( c ){
       data.addRow([c.attributes.contype, c.attributes.amount]);
     });

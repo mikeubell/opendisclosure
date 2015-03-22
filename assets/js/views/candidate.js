@@ -34,7 +34,7 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
   render: function(){
     this.$el.html(this.template(this.templateContext()));
 
-    if (this.model.get('summary') !== null){
+    if (this.model.get('committee') !== null){
       //Render Subviews
       if (OpenDisclosure.Data.categoryContributions.length > 0) {
         this.renderCategoryChart();
@@ -127,12 +127,12 @@ OpenDisclosure.Views.Candidate = Backbone.View.extend({
     context.imagePath = this.model.imagePath();
     context.lastUpdatedDate = this.model.get('last_updated_date');
 
-    if (this.model.get('summary') !== null) {
-      context.summary.totalContributions = this.model.totalContributions();
-      context.summary.availableBalance = this.model.availableBalance();
-      context.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');
-      context.summary.pctPersonalContributions = this.model.pctPersonalContributions();
-      context.summary.pctSmallContributions = this.model.pctSmallContributions();
+    if (this.model.get('committee') !== null) {
+      context.committee.summary.totalContributions = this.model.totalContributions();
+      context.committee.summary.availableBalance = this.model.availableBalance();
+      context.committee.summary.totalExpenditures = this.model.friendlySummaryNumber('total_expenditures_made');
+      context.committee.summary.pctPersonalContributions = this.model.pctPersonalContributions();
+      context.committee.summary.pctSmallContributions = this.model.pctSmallContributions();
     }
 
     return context;

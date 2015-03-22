@@ -2,7 +2,9 @@ OpenDisclosure.App = Backbone.Router.extend({
   routes: {
     '': 'home',
     'about': 'about',
-    'candidate/:name': 'candidate',
+    'election/:jurisdiction/:date': 'election',
+    'race/:jurisdiction/:date/:race': 'race',
+    'candidate/:jurisdiction/:date/:race/:name': 'candidate',
     'faq':'faq',
     'rules': 'rules',
     'iec': 'iec',
@@ -18,6 +20,7 @@ OpenDisclosure.App = Backbone.Router.extend({
     // We should try to minimize the amount of data we need to fetch here,
     // since each fetch makes an HTTP request.
     OpenDisclosure.Data = {
+      elections: new OpenDisclosure.Elections(),
       employerContributions: new OpenDisclosure.EmployerContributions(),
       categoryContributions: new OpenDisclosure.CategoryContributions(),
       categoryPayments: new OpenDisclosure.CategoryPayments(),
@@ -35,15 +38,33 @@ OpenDisclosure.App = Backbone.Router.extend({
       }
     }
 
-    OpenDisclosure.Data.candidates = new OpenDisclosure.Candidates(OpenDisclosure.BootstrappedData.candidates);
-
     Backbone.history.start({ pushState: true });
   },
 
   home: function(){
     $(window).scrollTop(0);
-    new OpenDisclosure.Views.Home({
-      el: '.main'
+    new OpenDisclosure.Views.Dashboard({
+      el: '.main',
+      elections: OpenDisclosure.Data.elections
+    });
+  },
+
+  election: function(jurisdiction, date) {
+    $(window).scrollTop(0);
+    new OpenDisclosure.Views.Election({
+      el: '.main',
+      jurisdiction: jurisdiction,
+      date: date
+    });
+  },
+
+  race: function(jurisdiction, date, race) {
+    $(window).scrollTop(0);
+    new OpenDisclosure.Views.Race({
+      el: '.main',
+      jurisdiction: jurisdiction,
+      date: date,
+      race: race
     });
   },
 
@@ -54,10 +75,13 @@ OpenDisclosure.App = Backbone.Router.extend({
     });
   },
 
-  candidate: function(name){
+  candidate: function(jurisdiction, date, race,name){
     $(window).scrollTop(0);
     new OpenDisclosure.Views.Candidate({
       el: '.main',
+      jurisdiction: jurisdiction,
+      date: date,
+      race: race,
       candidateName: name
     });
   },

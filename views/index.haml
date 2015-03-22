@@ -33,8 +33,8 @@
               %a{ href: '/' }
                 %img.header-oakland-logo-inline{ src: image_path('OaklandCityTree.png') }
                 Open Disclosure
-                %span.header-main-title-green Oakland
-            %h2.header-catchphrase Bringing Oakland Campaign Money to Light
+                .name.header-main-title-green 
+                .catch.h2.header-catchphrase 
 
     .container
       .row
@@ -71,7 +71,7 @@
           %span Loading data...
           %script{ type: 'text/template', id: 'mayoral-table-template' }
             :plain
-              <h2 class='mayoral-context-header'>Campaign Finance for the 2014 Oakland Mayoral Election</h2>
+              <h2 class='mayoral-context-header'>Campaign Finance for the <%= header %></h2>
               <table id='mayoral-table' class='table'>
                 <thead>
                   <tr>
@@ -92,12 +92,12 @@
                       </td>
                       <td class='mayor-info' scope='row'>
                         <p class='mayor-name'>
-                          <a href= '<%= m.linkPath() %>'><%= m.get('short_name') %></a>
+                          <a href= '<%= m.linkPath() %>'><%= m.get('committee').short_name %></a>
                         </p>
                         <p class='mayor-profession'><%= m.get('profession') %></p>
                       </td>
                       <td class='mayoral-table-number total-raised'><%= m.totalContributions() %></td>
-                      <td class='mayoral-table-number'><%= m.attributes.received_contributions_count %></td>
+                      <td class='mayoral-table-number'><%= m.attributes.committee.received_contributions_count %></td>
                       <td class='mayoral-table-number'><%= m.pctContributionsFromOakland() %></td>
                       <td class='mayoral-table-number'><%= m.pctPersonalContributions() %></td>
                       <td class='mayoral-table-number'><%= m.avgContribution() %></td>
@@ -170,9 +170,6 @@
       window.OpenDisclosure = {};
       window.OpenDisclosure.Views = {};
       window.OpenDisclosure.Data = {};
-      window.OpenDisclosure.BootstrappedData = {
-        candidates: #{candidate_json}
-      }
 
     -#
       Include the assets/js/application.js manifest. If you want to include

@@ -5,6 +5,62 @@ ActiveRecord::Schema.define do
     drop_table table_to_drop
   end
 
+  # An Election is composed of one or more Races.  Each race is for a measure
+  # or has a set of candidates running.
+  create_table :elections do |t|
+    t.string :jurisdiction, null: false
+    t.date :election_date, null: false
+    t.string :image_path
+    t.string :catchphrase
+  end
+
+  create_table :locations do |t|
+    t.string :name, null: false
+    t.string :shape
+  end
+
+  create_table :races do |t|
+    t.integer :election_id, null: false
+    t.string :type, null: false   # office or measure
+    t.string :name, null: false
+    t.integer :location_id # district, etc.
+    t.string :description
+
+    t.index [:election_id]
+  end
+
+  create_table :candidates do |t|
+    t.integer :race_id, null: false
+    t.integer :committee_id # id of committee in parties
+    t.string :name, null: false
+    t.date :declared
+    t.string :profession
+    t.string :party
+    t.string :twitter
+    t.text :bio
+    t.string :image_file
+
+    t.index [:race_id]
+  end
+
+  # Sorces of information in bio or measure description
+  create_table :sources do |t|
+    t.string :type, null: false # measure or candidate
+    t.integer :record_id, null: false
+    t.string :name
+    t.string :url
+
+    t.index [:type, :record_id]
+  end
+
+  create_table :measures do |t|
+    t.integer :race_id, null: false
+    t.string :description
+    t.integer :comittee_id
+
+    t.index [:race_id]
+  end
+
   create_table :parties do |t|
     t.string :type, null: false    # Individual, Other, Committee
     t.string :name, null: false
