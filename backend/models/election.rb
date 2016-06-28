@@ -10,12 +10,12 @@ class Election < ActiveRecord::Base
   def self.load_elections(csv)
     transaction do
       CSV.parse(open(csv).read, headers: :first_row) do |row|
-	Election.create(
-	  jurisdiction: row['Jurisdiction'],
-	  election_date: row['Date'],
-	  image_path: row['Image'],
-	  catchphrase: row['Catchphrase']
-	)
+       Election.create(
+         jurisdiction: row['Jurisdiction'],
+         election_date: row['Date'],
+         image_path: row['Image'],
+         catchphrase: row['Catchphrase']
+       )
       end
     end
   end

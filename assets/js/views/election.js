@@ -6,7 +6,7 @@ OpenDisclosure.Views.Election = Backbone.View.extend({
     this.options = options;
     var match = function(e) {
       return e.attributes.jurisdiction == this.options.jurisdiction &&
-	e.attributes.election_date == this.options.date;
+       e.attributes.election_date == this.options.date;
     }.bind(this);
 
     this.election = OpenDisclosure.Data.elections.find(match);
@@ -24,23 +24,23 @@ OpenDisclosure.Views.Election = Backbone.View.extend({
   raceTemplate: _.template('\
     <a href="<%= r.linkPath() %>">\
       <div class="col-xs-12">\
-	<span class="col-xs-6"><%= r.get("name") %></span>\
-	<span class="col-xs-6"><%= r.get("description") %></span>\
+       <span class="col-xs-6"><%= r.get("name") %></span>\
+       <span class="col-xs-6"><%= r.get("description") %></span>\
       </div>\
     </a>'),
 
   render : function() {
-    $('.name').html(this.options.jurisdiction);
-    $('.catch').html(this.election.attributes.catchphrase);
-    this.$el.html(this.template({
-      races: this.collection
-    }));
-    this.$el.append(this.collection.map(this.renderRace).join(' '));
-	
+    election = this.collection.models[0].attributes;
+    this.election = election;
+    $('.name').html(election.jurisdiction);
+    $('.catch').html(election.catchphrase);
+    this.$el.html(this.template({ }));
+    this.$el.append(election.races.map(this.renderRace).join(' '));
   },
 
   renderRace: function(r) {
-    var race = new OpenDisclosure.Race(r.attributes);
+    var race = new OpenDisclosure.Race(r);
+    race.election = this.election
     return this.raceTemplate({
       r: race
     });

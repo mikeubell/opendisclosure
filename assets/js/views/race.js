@@ -3,7 +3,7 @@ OpenDisclosure.Views.Race = Backbone.View.extend({
     _.bindAll(this, 'render');
     this.options = options;
     this.collection = new OpenDisclosure.Candidates([],
-	{jurisdiction: this.options.jurisdiction, date: this.options.date, race: this.options.race });
+       {jurisdiction: this.options.jurisdiction, date: this.options.date, race: this.options.race });
     this.collection.fetch({ success: this.render });
   },
 

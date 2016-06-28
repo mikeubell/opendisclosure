@@ -58,12 +58,12 @@ class OpenDisclosureApp < Sinatra::Application
 
     fields = {
       include: [
-	:race
+      :races
       ]
     }
     Election.find_by(jurisdiction: jurisdiction, election_date: date).to_json(fields)
-    #id = Election.where(jurisdiction: jurisdiction, election_date: date).first.id;
-    #Race.includes(:election).where(election_id: id).to_json(fields)
+    # id = Election.where(jurisdiction: jurisdiction, election_date: date).first.id;
+    # Race.includes(:election).where(election_id: id).to_json(fields)
   end
 
   get '/api/candidates/:jurisdiction/:date/:race' do |jurisdiction, date, race|
@@ -72,9 +72,9 @@ class OpenDisclosureApp < Sinatra::Application
 
     fields = {
         include: [
-	  { committee: { methods: [ :short_name, :summary ] } },
-	  { race: {include: "election" } }
-	]
+        { committee: { methods: [ :short_name, :summary ] } },
+        { race: {include: "election" } }
+      ]
     }
     headers 'Content-Type' => 'application/json'
     id = Election.where(jurisdiction: jurisdiction, election_date: date).first.id;
